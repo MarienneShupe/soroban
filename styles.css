@@ -29,11 +29,18 @@ body {
     width: 100px;
     height: 300px;
     margin: 0 20px;
-    border: 1px solid #ccc;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.bar {
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+    position: absolute;
+    top: 33%; /* Heaven bead above, earth beads below */
 }
 
 .bead {
@@ -44,15 +51,25 @@ body {
     margin: 5px 0;
     cursor: pointer;
     transition: transform 0.3s ease;
+    position: relative;
 }
 
-.bead.active {
+.heaven-bead {
+    top: 0;
+}
+
+.heaven-bead.active {
     background-color: #d2691e;
-    transform: translateY(-100px); /* Moves beads up when active */
+    transform: translateY(80px); /* Slides down to bar */
 }
 
-.five-bead {
-    margin-bottom: 20px;
+.earth-bead {
+    top: 40%; /* Position below bar */
+}
+
+.earth-bead.active {
+    background-color: #d2691e;
+    transform: translateY(-80px); /* Slides up to bar */
 }
 
 #reset-btn {
