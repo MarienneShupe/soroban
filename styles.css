@@ -1,0 +1,70 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+.soroban-container {
+    position: relative;
+    text-align: center;
+}
+
+#display {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.soroban {
+    display: flex;
+    border: 5px solid #333;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.rod {
+    width: 100px;
+    height: 300px;
+    margin: 0 20px;
+    border: 1px solid #ccc;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bead {
+    width: 60px;
+    height: 30px;
+    background-color: #8b4513;
+    border-radius: 15px;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.bead.active {
+    background-color: #d2691e;
+    transform: translateY(-100px); /* Moves beads up when active */
+}
+
+.five-bead {
+    margin-bottom: 20px;
+}
+
+#reset-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#operation-log {
+    margin-top: 20px;
+    font-size: 24px;
+}
