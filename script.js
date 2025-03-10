@@ -22,50 +22,63 @@ document.addEventListener('DOMContentLoaded', () => {
         let tens = 0;
         let ones = 0;
 
-        tensRod.querySelectorAll('.bead').forEach(bead => {
-            if (bead.classList.contains('active')) {
-                tens += parseInt(bead.dataset.value);
-            }
+        const tensHeaven = tensRod.querySelector('.heaven-bead');
+        if (tensHeaven.classList.contains('active')) tens += 5;
+        tensRod.querySelectorAll('.earth-bead').forEach(bead => {
+            if (bead.classList.contains('active')) tens += 1;
         });
 
-        onesRod.querySelectorAll('.bead').forEach(bead => {
-            if (bead.classList.contains('active')) {
-                ones += parseInt(bead.dataset.value);
-            }
+        const onesHeaven = onesRod.querySelector('.heaven-bead');
+        if (onesHeaven.classList.contains('active')) ones += 5;
+        onesRod.querySelectorAll('.earth-bead').forEach(bead => {
+            if (bead.classList.contains('active')) ones += 1;
         });
 
         return tens * 10 + ones;
     }
 
     function handleBeadClick(bead, rod) {
-        const value = parseInt(bead.dataset.value);
+        const isHeaven = bead.classList.contains('heaven-bead');
         const isTensRod = rod.id === 'tens-rod';
         const previousValue = currentValue;
 
         if (isTensRod) {
-            // Only one bead in tens rod (value 5)
-            if (bead.classList.contains('active')) {
-                bead.classList.remove('active');
+            if (isHeaven) {
+                const wasActive = bead.classList.contains('active');
+                rod.querySelectorAll('.bead').forEach(b => b.classList.remove('active'));
+                if (!wasActive) bead.classList.add('active');
+                onesRod.querySelectorAll('.bead').forEach(b => b.classList.remove('active')); // Clear ones
             } else {
+                // Earth beads in tens rod (not used for 0-10, but included for completeness)
+                const earthBeads = rod.querySelectorAll('.earth-bead');
+                const index = Array.from(earthBeads).indexOf(bead) + 1;
+                rod.querySelectorAll('.bead').forEach(b => b.classList.remove('active'));
+                for (let i = 0; i < index; i++) {
+                    earthBeads[i].classList.add('active');
+                }
+            }
+        } else { // Ones rod
+            if (isHeaven) {
                 rod.querySelectorAll('.bead').forEach(b => b.classList.remove('active'));
                 bead.classList.add('active');
-                onesRod.querySelectorAll('.bead').forEach(b => b.classList.remove('active')); // Clear ones
-            }
-        } else {
-            // Ones rod logic
-            rod.querySelectorAll('.bead').forEach(b => b.classList.remove('active'));
-            if (value === 5) {
-                bead.classList.add('active');
             } else {
-                for (let i = 1; i <= value; i++) {
-                    rod.querySelector(`.one-bead[data-value="${i}"]`).classList.add('active');
+                const earthBeads = rod.querySelectorAll('.earth-bead');
+                const index = Array.from(earthBeads).indexOf(bead) + 1;
+                rod.querySelectorAll('.bead').forEach(b => b.classList.remove('active'));
+                for (let i = 0; i < index; i++) {
+                    earthBeads[i].classList.add('active');
                 }
             }
         }
 
         currentValue = calculateValue();
-        if (currentValue > 10) currentValue = 10; // Cap at 10
-        if (currentValue < 0) currentValue = 0; // Floor at 0
+        if (currentValue > 10) {
+            resetSoroban();
+            currentValue = 10;
+            onesRod.querySelector('.heaven-bead').classList.add('active');
+            onesRod.querySelectorAll('.earth-bead')[0].classList.add('active');
+        }
+        if (currentValue < 0) currentValue = 0;
 
         const diff = currentValue - previousValue;
         if (diff !== 0) {
