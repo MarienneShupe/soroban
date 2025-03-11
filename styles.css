@@ -1,3 +1,4 @@
+
 body {
     display: flex;
     justify-content: center;
@@ -40,7 +41,7 @@ body {
     height: 2px;
     background-color: #000;
     position: absolute;
-    top: 33%; /* Heaven bead above, earth beads below */
+    top: 25%; /* Below heaven bead, above earth beads */
 }
 
 .bead {
@@ -51,7 +52,7 @@ body {
     margin: 5px 0;
     cursor: pointer;
     transition: transform 0.3s ease;
-    position: relative;
+    position: absolute;
 }
 
 .heaven-bead {
@@ -60,16 +61,21 @@ body {
 
 .heaven-bead.active {
     background-color: #d2691e;
-    transform: translateY(80px); /* Slides down to bar */
+    transform: translateY(70px); /* Slides down to bar */
 }
 
 .earth-bead {
-    top: 40%; /* Position below bar */
+    bottom: 0; /* Rest at bottom */
 }
+
+.earth-bead:nth-child(3) { bottom: 35px; }
+.earth-bead:nth-child(4) { bottom: 70px; }
+.earth-bead:nth-child(5) { bottom: 105px; }
+.earth-bead:nth-child(6) { bottom: 140px; }
 
 .earth-bead.active {
     background-color: #d2691e;
-    transform: translateY(-80px); /* Slides up to bar */
+    transform: translateY(-175px); /* Slides up to bar */
 }
 
 #reset-btn {
