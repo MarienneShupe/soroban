@@ -22,19 +22,20 @@ document.addEventListener('DOMContentLoaded', () => {
         let tens = 0;
         let ones = 0;
 
-        const tensHeaven = tensRod.querySelector('.heaven-bead');
-        if (tensHeaven.classList.contains('active')) tens += 5;
-        tensRod.querySelectorAll('.earth-bead').forEach(bead => {
-            if (bead.classList.contains('active')) tens += 1;
-        });
+        if (tensRod.querySelector('.heaven-bead').classList.contains('active')) {
+            tens = 5;
+        }
 
         const onesHeaven = onesRod.querySelector('.heaven-bead');
-        if (onesHeaven.classList.contains('active')) ones += 5;
-        onesRod.querySelectorAll('.earth-bead').forEach(bead => {
-            if (bead.classList.contains('active')) ones += 1;
-        });
+        if (onesHeaven.classList.contains('active')) {
+            ones = 5;
+        } else {
+            onesRod.querySelectorAll('.earth-bead').forEach(bead => {
+                if (bead.classList.contains('active')) ones += 1;
+            });
+        }
 
-        return tens * 10 + ones;
+        return tens + ones; // Tens is 0 or 5, ones is 0-9, max 10
     }
 
     function handleBeadClick(bead, rod) {
@@ -43,28 +44,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const previousValue = currentValue;
 
         if (isTensRod) {
-            if (isHeaven) {
-                const wasActive = bead.classList.contains('active');
-                rod.querySelectorAll('.bead').forEach(b => b.classList.remove('active'));
-                if (!wasActive) bead.classList.add('active');
+            // Toggle tens heaven bead (5)
+            bead.classList.toggle('active');
+            if (bead.classList.contains('active')) {
                 onesRod.querySelectorAll('.bead').forEach(b => b.classList.remove('active')); // Clear ones
-            } else {
-                // Earth beads in tens rod (not used for 0-10, but included for completeness)
-                const earthBeads = rod.querySelectorAll('.earth-bead');
-                const index = Array.from(earthBeads).indexOf(bead) + 1;
-                rod.querySelectorAll('.bead').forEach(b => b.classList.remove('active'));
-                for (let i = 0; i < index; i++) {
-                    earthBeads[i].classList.add('active');
-                }
             }
         } else { // Ones rod
             if (isHeaven) {
-                rod.querySelectorAll('.bead').forEach(b => b.classList.remove('active'));
-                bead.classList.add('active');
+                // Set to 5, clear earth beads
+                rod.querySelectorAll('.earth-bead').forEach(b => b.classList.remove('active'));
+                bead.classList.toggle('active');
             } else {
+                // Earth beads: set 1-4
                 const earthBeads = rod.querySelectorAll('.earth-bead');
                 const index = Array.from(earthBeads).indexOf(bead) + 1;
-                rod.querySelectorAll('.bead').forEach(b => b.classList.remove('active'));
+                rod.querySelector('.heaven-bead').classList.remove('active');
+                earthBeads.forEach(b => b.classList.remove('active'));
                 for (let i = 0; i < index; i++) {
                     earthBeads[i].classList.add('active');
                 }
@@ -75,10 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentValue > 10) {
             resetSoroban();
             currentValue = 10;
+            tensRod.querySelector('.heaven-bead').classList.add('active');
             onesRod.querySelector('.heaven-bead').classList.add('active');
-            onesRod.querySelectorAll('.earth-bead')[0].classList.add('active');
         }
-        if (currentValue < 0) currentValue = 0;
 
         const diff = currentValue - previousValue;
         if (diff !== 0) {
