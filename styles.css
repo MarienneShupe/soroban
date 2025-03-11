@@ -40,7 +40,7 @@ body {
     height: 2px;
     background-color: #000;
     position: absolute;
-    top: 25%; /* Heaven above, earth below */
+    top: 25%;
 }
 
 .bead {
@@ -49,22 +49,23 @@ body {
     background-color: #8b4513;
     border-radius: 15px;
     margin: 5px 0;
-    cursor: pointer;
-    transition: transform 0.3s ease;
     position: absolute;
+    transition: transform 0.3s ease;
 }
 
 .heaven-bead {
     top: 0;
+    cursor: default;
 }
 
 .heaven-bead.active {
     background-color: #d2691e;
-    transform: translateY(70px); /* Down to bar */
+    transform: translateY(40px);
 }
 
 .earth-bead {
-    bottom: 0; /* Rest at bottom */
+    bottom: 0;
+    cursor: pointer;
 }
 
 .earth-bead:nth-child(3) { bottom: 35px; }
@@ -74,7 +75,11 @@ body {
 
 .earth-bead.active {
     background-color: #d2691e;
-    transform: translateY(-105px); /* Up to bar, adjusted to sit adjacent */
+    transform: translateY(-70px);
+}
+
+.earth-bead.static {
+    cursor: default;
 }
 
 #reset-btn {
